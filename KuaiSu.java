@@ -1,5 +1,7 @@
 package com.liuxi;
-
+/**
+*这是我第一个在git上传的代码
+*/
 public class KuaiSu {
 	public void quickSort(int[]a,int start,int end){
         if(start<end){
