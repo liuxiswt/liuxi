@@ -1,6 +1,6 @@
 package com.liuxi;
 /**
-*这是我第一个在git上传的代码
+*快速排序算法的实现
 */
 public class KuaiSu {
 	public void quickSort(int[]a,int start,int end){
