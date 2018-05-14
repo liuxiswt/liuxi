@@ -1,0 +1,8 @@
+http://fanyi.baidu.com/gettts?lan=zh&text= &spd=5&source=web
+
+
+使用说明：
+在&text=测试的内容
+比如：
+http://fanyi.baidu.com/gettts?lan=zh&text=Java是世界上最好的编程语言！不服来辩！&spd=5&source=web
+
