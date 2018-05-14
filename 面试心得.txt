@@ -1,0 +1,380 @@
+****先做个自我介绍？
+……
+******项目经验：
+******介绍下你做的项目？
+第一个，国税协同办公平台，是一个由我的导师带领我做的一个项目。首先，该项目包括很多子系统，
+而我负责 纳税服务 这个子系统，主要完成角色管理，用户管理，信息发布管理，投诉管理，纳税咨询，
+服务咨询等模块。核心是实现该子系统PC端的后台管理和部分个人工作空间页面展示。当时是运用SSH框架
+完成的，因为系统中对很多操作权限有着严格的划分，用Struts2的更加强大拦截器比较好；
+然后系统也没有很复杂的SQL语句查询，都是一些基础的增删改操作，所以用Hibernate效率更高。
+数据库方面的话，当时导师要求的数据库是mysql。
+
+第二个项目呢，其实是我当时实习的那个公司（黄石大匠信息科技公司）的一个官网的开发，我主要负责宣
+传和招聘两个模块的设计，代码实现，和一些测试。当时开会的时候，决定全项目都是用SSM框架做整合开发，
+因为这个项目比较小嘛，用Spring mvc+Spring+MyBatis更加灵活方便，其次呢，这个项目涉及到一些
+复杂搜索的功能实现，动态SQL封装的话用MyBatis更好，数据库也是用的传统的Oracle。这个项目最棘手，
+当然是一些前端技术的使用，因为官网，肯定要做的好看好用点浏览的人才多嘛。像AJAX实现异步局部刷新
+啊，JQuery（Easy UI前端框架）+js的动态页面效果，其实我个人并不是很擅长前端这块。
+遇到的问题：比如在前台ajax的GET或POST请求返回各种参数的时候，mvc怎么接收？
+答：主要思路是看ajax返回的数据形式，比如，POST+JSON字符串啊，POST+JSON对象，GET+参数字符串等等
+POST+JSON字符串的时候，用注解RequestBody输入ResponseBody输出，HttpEntity来实现输入绑定，
+来ResponseEntity输出绑定
+POST+JSON对象/GET+参数字符串的时候，用request.getParameter获取请求参数或者@ModelAttribute
+将参数封装对象，注解method=RequestMethod.GET/POST来决定提交方法；
+
+
+
+专业技能：
+******基础知识：
+1.Static的作用?
+修饰：
+	方法，
+	变量，
+	代码块（静态块不在任何的方法体内），
+	内部类（静态内部类只能访问外部类的静态属性或方法），	
+	静态导入包/方法（简化方便操作，只能使用导入类里面的静态方法）。
+2.final的作用？与finally，finalize的区别？
+作用：	
+	被final修饰的类不可以被继承
+	被final修饰的方法不可以被重写
+	被final修饰不可变的是变量的引用，而不是引用指向的内容，引用指向的内容是可以改变的。
+区别：
+	finally是异常处理语句结构的一部分，表示总是必须执行。
+	finalize是Object类的一个方法，在垃圾收集器执行的时候会调用被回收对象的此方法，
+	供垃圾收集时的其他资源回收，例如关闭文件等。
+3.foreach循环的原理？
+	增强for循环底层是通过迭代器模式来实现的，删除不能用List的remove()方法！！！
+	Iterator是工作在一个独立的线程中，并且拥有一个 mutex 锁。
+	Iterator被创建之后会建立一个指向原来对象的单链索引表，当原来的对象数量发生变化时
+	这个索引表的内容不会同步改变，所以当索引指针往后移动的时候就找不到要迭代的对象，
+	所以按照 fail-fast 原则 Iterator 会马上抛出java.util.ConcurrentModificationException异常。
+	所以 Iterator 在工作的时候是不允许被迭代的对象被改变的。
+	但你可以使用 Iterator 本身的方法 remove() 来删除对象，Iterator.remove() 
+	方法会在删除当前迭代对象的同时维护索引的一致性。
+4.转发和重定向的区别？
+	1.重定向时浏览器上的网址改变；转发是浏览器上的网址不变
+	2.重定向实际上产生了两次请求；转发只有一次请求
+	3.重定向时的网址可以是任何网址，不同服务器；转发的网址必须是本站点的网址，相同服务器
+	4.转发在服务器端完成的；重定向是在客户端完成的
+	5.转发的速度快；重定向速度慢
+	6.转发不会执行转发后的代码；重定向会执行重定向之后的代码
+5.String与StringBuffer与StringBuilder的区别？
+	1.String 字符串常量长度不可变（可利用反射强制改），而StringBuffer, StringBuilder字符串变量（有缓冲区）长度可变
+	2.StringBuffer线程安全的, StringBuilder非线程安全的
+	3.在执行速度上，String < StringBuffer < Stringbuilder
+	4.使用String类：在字符串不经常变化的场景，例如常量的声明、少量的变量运算；
+	使用StringBuffer类的场景：在频繁进行字符串运算（如拼接、替换、删除等），并且运行在多线程环境中，例如XML解析、HTTP参数解析和封装；
+	使用StringBuilder类的场景：在频繁进行字符串运算（如拼接、替换、和删除等），并且运行在单线程的环境中，如SQL语句的拼装、JSON封装等
+
+。
+6.JSP九大内置对象和四大作用域？
+	九大内置对象：request、response、pageContext、session、application、exception、config、out、page
+	四大作用域：page、request、session、application
+7.GET与POST的区别？
+	1.GET产生一个TCP数据包；POST产生两个TCP数据包。
+	2.对于GET方式的请求，浏览器会把http header和data一并发送出去，服务器响应200（返回数据）；
+	而对于POST，浏览器先发送header，服务器响应100 continue，浏览器再发送data，服务器响应200 ok（返回数据）。
+	3.GET参数通过url传递，POST放在request body中。
+	4.GET请求在url中传递的参数是有长度限制的，而POST没有。
+	5.GET比POST更不安全，因为参数直接暴露在url中，所以不能用来传递敏感信息。
+	6.GET请求只能进行url编码，只允许 ASCII 字符。而POST支持多种编码方式，也允许二进制数据。
+	7.GET请求参数会被完整保留在浏览历史记录里，而POST中的参数不会被保留
+	8.GET后退按钮/刷新无害，POST数据会被重新提交（浏览器应该告知用户数据会被重新提交）。
+	9.GET书签可收藏，POST为书签不可收藏。
+	10.GET能被缓存，POST不能缓存 。
+
+
+******集合：
+1.List（ArrayList,LinkedList,vector，Stack）
+	List有序，能重复，允许为null！判空方法list.isEmpty() 和  list.size()==0
+	ArrayList底层是一个动态数组，初始容量（10），默认是扩展50% + 1个。查询性能优秀。
+	LinkedList底层是一个双链表,无初始容量。在添加和删除元素时具有比ArrayList更好的性能。
+	vector线程安全的ArrayList，初始容量（10）默认扩容会增加一倍。效率低。
+	Stack 是栈，它继承于Vector。它的特性是：先进后出
+
+2.Set(hashSet,TreeSet)
+	Set无序，不可重复（先hashCode（），再equals()判重）Set.iterator()遍历判重，允许为null!
+	
+	hashSet由哈希表（实际上是一个HashMap实例）支持，PRESENT是一个Object类型的常量，
+	用来当做map的value，默认初始容量为16，加载因子为0.75，扩容量的 1 倍
+	
+	LinkedHashSet：具有HashSet的查询速度，且内部使用链表维护元素的顺序(插入的次序)。
+	于是在使用迭代器遍历Set时，结果会按元素插入的次序显示。无初始值。
+	
+	TreeSet底层是红黑树（二叉树）按照树节点进行存储和取出。引用对象需实现Comparable接口。
+	会调用compareTo()方法来比较元素之间大小关系，判断不相同是equals方法,
+	可以自定义一个顺序,对象存入之后会按照指定的顺序排列
+
+3.Map(HashMap,Hashtable,TreeMap,WeakHashMap)
+	Map无序，键必须是唯一，允许键/值为null
+	
+	HashMap是基于哈希表的链表式数组，先根据key的hashCode重新计算hash值，
+	根据hash值得到这个元素在数组中的位置，再通过equals方法其链表中的位置。默认初始值16，
+	加载因子为0.75，扩容量的 1 倍
+	
+	Hashtable是通过“拉链法”实现的哈希表，函数都是同步的，这意味着它是线程安全的。
+	它的key、value都不可以为null。默认初始值11，加载因子为0.75，锁针对整张哈希表，
+	经常使用Enumeration、Iterator遍历
+
+	WeakHashMap是“弱键”实现的哈希表。“弱键”的目的就是：实现对“键值对”的动态回收。
+	当“弱键”不再被使用到时，GC会回收它，WeakReference也会将“弱键”对应的键值对删除。
+
+
+******线程
+1.实现线程的几种方式
+	继承Thread 
+	实现Runnable接口（常用）
+	实现Callable接口
+	Executors创建线程池（jdk1.5之后的）
+2.Runnable和Callable的区别是：
+	（1）Callable规定的方法是call（），Runnable规定的方法是run（）。 
+	（2）Callable的任务执行后可返回值，而Runnable的任务是不能返回值得 
+	（3）call方法可以抛出异常，run方法不可以 
+	（4）运行Callable任务可以拿到一个Future/FutureTask对象，表示异步执行的结果。 
+3.四种线程池：
+	(1)newCachedThreadPool 
+	创建一个可缓存线程池，如果线程池长度超过处理需要，可灵活回收空闲线程，若无可回收，
+	则新建线程。 
+	(2)newFixedThreadPool 
+	创建一个定长线程池，可控制线程最大并发数，超出的线程会在队列中等待。 
+	(3)newScheduledThreadPool 
+	创建一个定长线程池，支持定时及周期性任务执行。 
+	(4)newSingleThreadExecutor 创建一个单线程化的线程池，它只会用唯一的工作线程来执行任务，
+	保证所有任务按照指定顺序(FIFO, LIFO, 优先级)执行。
+4.锁的几种方式和区别
+	synchronized是关键字，会自动释放锁，
+	ReentrantLock是类，手动放入finally中释放，性能更好：可以对获取锁的等待时间进行设置，这样就避免了死锁；
+	可以获取各种锁的信息；可以灵活地实现多路通知；
+5.volatile关键字的作用：
+	常用于保持内存可见性：volatile关键字修饰的变量看到的随时是自己的最新值
+	防止指令重排序：volatile关键字使变量的读、写具有了“原子性”
+6.线程类的构造方法、静态块是被new这个线程类所在的线程所调用的，而run方法里面的代码才是被线程自身所调用的。
+7.Semaphore就是一个信号量，它的作用是限制某段代码块的并发数
+8.饿汉式单例模式的写法：线程安全；懒汉式单例模式的写法：非线程安全；双检锁单例模式的写法：线程安全
+9.sleep方法和wait方法都可以用来放弃CPU一定的时间，sleep方法不会放弃这个对象的监视器，wait方法会放弃这个对象的监视器
+10.wait()方法立即释放对象监视器，notify()/notifyAll()方法则会等待线程剩余代码执行完毕才会放弃对象监视器。
+
+
+******框架
+1.Struts2
+	核心组件：
+	1.ActionMapper：通过method参数将请求转发到具体的action
+	2.ActionProxy代理：是Action的一个代理类，也就是说Action的调用是通过ActionProxy实现的，其实就是调用了ActionProxy.execute()方法，而该方法又调用了ActionInvocation.invoke()方法。归根到底，最后调用的是DefaultActionInvocation.invokeAction()方法。
+	3.ActionInvocation：就是Action的调用者。ActionInvocation在Action的执行过程中，负责Interceptor、Action和Result等一系列元素的调度。
+	4.Interceptor拦截器：是Struts 2的一个强有力的工具，有许多功能（feature）都是构建于它之上，如国际化、校验等。
+	流程实现：
+	—>客户端发送一个url请求给服务器
+	—>请求经过一系列的过滤器（Filter）
+	—>FilterDispatcher核心控制器调用,询问ActionMapper来决定这个请是否需要调用某个Action 
+	—>决定调用Action,FilterDispatcher把请求的处理交给ActionProxy
+	—>ActionProxy通过struts.xml配置中读取找到需要调用的Action类
+	—>ActionProxy创建一个ActionInvocation的实例
+	—>ActionInvocation实例调用Action，其中涉及到拦截器（Intercepter）的调用
+	—>返回一个String,根据struts.xml返回对应的Jsp
+2.Spring Mvc
+	核心组件：
+	1.DispatcherServlet：作用接受请求，响应结果，相当于转发器,中央处理器
+	2.映射器（HandlerMapping）：根据请求的url查找Handler
+	3.处理/控制器（Handler/controller）：调用业务逻辑处理
+	4.适配器（HandlerAdapter）：根据特定规则执行handler
+	5.视图解析器：进行视图解析，根据逻辑视图名解析成真正的视图（view）
+	流程实现：
+	—>用户发送请求到DispatcherServlet
+	—>DispatcherServlet调用映射器查找Handler
+	—>映射器生成处理器对象及拦截器一并返回给DispatcherServlet
+	—>DispatcherServlet调用处理器适配器去执行handler
+	—>处理器适配器去调用执行handler
+	—>处理器执行完成给适配器返回ModelAndView
+	—>处理器适配器向DispatcherServlet返回ModelAndView
+	—>DispatcherServlet请求调用视图解析器	
+	—>视图解析器向DispatcherServlet返回View
+	—>DispatcherServlet根据View进行渲染视图
+	—>DispatcherServlet响应用户结果
+Spring Mvc与Struts2的区别：
+	（1）Spring mvc的核心是servlet，而Struts2是filter
+	（2）Struts2是类级别的拦截，每次来了请求就创建一个Action多例模式。SpringMVC是方法级别的拦截，单例模式。
+	（3）Struts2有以自己的interceptor机制，SpringMVC用的是独立的AOP方式，这样导致Struts2的配置文件量还是比SpringMVC大。
+	（4）SpringMVC集成了Ajax，使用非常方便，只需一个注解@ResponseBody就可以实现，然后直接返回响应文本即可；
+	     Struts2拦截器集成了Ajax，在Action中处理时一般必须安装插件或者自己写代码集成进去，使用起来也相对不方便。
+	（5）SpringMVC开发效率和性能高于Struts2
+	（6）SpringMVC验证支持JSR303，处理起来相对更加灵活方便，而Struts2验证比较繁琐，感觉太烦乱。
+	（7）Spring MVC和Spring是无缝的。从这个项目的管理和安全上也比Struts2高。配置也比Struts2少、简单
+3.Hibernate
+	核心接口：
+	1.session：负责被持久化对象CRUD操作
+	2.sessionFactory:负责初始化hibernate，创建session对象
+	3.configuration:负责配置并启动hibernate，创建SessionFactory
+	4.Transaction:负责事物相关的操作
+	5.Query和Criteria接口：负责执行各种数据库查询
+	流程实现：
+	—>读取并解析hibernate.cfg.xml配置文件
+	—>读取并解析映射信息，创建SessionFactory
+	—>打开Session
+	—>创建并启动事务Transation
+	—>操作数据，持久化操作
+	—>提交事务
+	—>关闭Session
+	—>关闭SessionFactory
+	缓存实现：
+	Hibernate一级缓存又称为“Session的缓存”，它是内置的，意思就是说，只要你使用hibernate就必须使用session缓存。
+	由于Session对象的生命周期通常对应一个数据库事务或者一个应用事务，因此它的缓存是事务范围的缓存。在第一级缓存中，
+	持久化类的每个实例都具有唯一的OID。 
+	Hibernate二级缓存又称为“SessionFactory的缓存”，由于SessionFactory对象的生命周期和应用程序的整个过程对应，
+	因此Hibernate二级缓存是进程范围或者集群范围的缓存，有可能出现并发问题，因此需要采用适当的并发访问策略，
+	该策略为被缓存的数据提供了事务隔离级别。
+	Hibernate提供第三方自定义创建配置缓存。
+4.MyBatis
+	核心接口：
+	1.Configuration：MyBatis所有的配置信息都保存在Configuration对象之中，配置文件中的大部分配置都会存储到该类中
+	2.SqlSession：作为MyBatis工作的主要顶层API，表示和数据库交互时的会话，完成必要数据库增删改查功能
+	3.Executor：MyBatis执行器，是MyBatis 调度的核心，负责SQL语句的生成和查询缓存的维护
+	4.Mapped Statement：另外Mapped Statement是底层封装对象，对操作数据库的参数进行封装，包括sql语句、输入参数、输出参数
+	流程实现：
+	—>读取SqlMapConfig.xml配置文件，获取数据源、事务、加载实体等信息。
+	—>单例创建SqlSessionFactory作用范围是应用程序级，
+	—>创建Sqlsession会话，可执行DB操作，执行sql语句、事务控制，不是线程安全的作用范围最好界定到方法级别，
+	定义为方法的局部变量：一个方法独有一个SqlSession实例。
+	—>使用SqlSession获得Mapper接口的对象
+	—>调用Mapper接口的某个方法，myBatis自动从对应的映射文件找到对应的sql语句
+	—>自动使用JDBC执行sql语句并得到ResultSet结果集
+	—>自动根据ORM思想把结果集处理成List对象后返回
+	缓存实现：
+	Mybatis的一级缓存是指SqlSession。一级缓存的作用域是一个SqlSession。Mybatis默认开启一级缓存。
+	在同一个SqlSession中，执行相同的查询SQL，第一次会去查询数据库，并写到缓存中；第二次直接从缓存中取。
+	当执行SQL时两次查询中间发生了增删改操作，则SqlSession的缓存清空。
+	Mybatis的二级缓存是指mapper映射文件。二级缓存的作用域是同一个namespace下的mapper映射文件内容，多个SqlSession共享。
+	Mybatis需要手动设置启动二级缓存。
+Mybatis与Hibernate的区别：
+	（1）hibernate是全自动对JavaBean和Sql语句的封装；而mybatis是半自动对Sql语句的封装。
+	（2）hibernate数据库移植性远大于mybatis
+	（3）hibernate拥有完整的日志系统涉及广泛，包括：sql记录、关系异常、优化警告、缓存提示、脏数据警告等，
+	mybatis则欠缺一些只有基本记录功能
+	（4）mybatis可以进行更为细致的SQL优化，可以减少查询字段；hibernate支持HQL语句虽然也支持原生sql，使用上不方便；
+	（5）mybatis二级缓存机制不佳，需要配置很复杂。hibernate更好的二级缓存机制，可以使用第三方缓存。
+5.Spring
+	三大核心组件：
+	1.Beans：Bean的定义、Bean的创建和Bean的解析
+	2.Context：提供一个运行时的环境，用以保存各个对象的状态(IOC容器)
+	3.Core：是发现、建立和维护每个bean之间的关系所需要的一些工具，其中重要组成部分就是定义了资源的访问方式
+	核心内容：
+	IOC容器依赖注入（控制反转）：利用xml的配置信息，java对象的创建工作，和对象中元素的赋值工作可以交给spring处理。
+	AOP面向切面：动态代理实现将日志记录，性能统计，安全控制，事务处理，异常处理等代码从业务逻辑代码中划分出来。
+	设计模式：
+	1.工厂模式：即应用程序将对象的创建及初始化职责交给工厂对象
+	2.单例模式：保证一个类仅有一个实例，并提供一个访问它的全局访问点，Spring中的BeanFactory
+	3.适配器模式：使用的Advice（通知）来增强被代理类的功能
+	4.代理模式：AOP功能的原理就使用代理模式（1、JDK动态代理 2、CGLib字节码生成技术代理）
+	5.观察者模式：当一个对象的状态发生改变时，所有依赖于它的对象都得到通知并被自动更新。spring中常用的listener的实现	
+	6.包装器模式：一种是类名中含有Wrapper，另一种是类名中含有Decorator。基本上都是动态地给一个对象添加一些额外的职责
+	7.策略模式：定义一系列的算法，把它们一个个封装起来，并且使它们可相互替换。本模式使得算法可独立于使用它的客户而变化。 
+	spring中在实例化对象的时候用到
+	8.模板模式：定义一个操作中的算法的骨架，而将一些步骤延迟到子类中。spring中的JdbcTemplate
+	
+
+******数据库
+1.事务四大特性：原子性，隔离性，持久性，一致性。
+2.SQL语句优化：
+	（1）通过变量的方式来设置参数
+	（2）对查询进行优化，应尽量避免全表扫描，首先应考虑在 where 及 order by 涉及的列上建立索引
+	（3）谨慎使用模糊查询
+	（4）不要使用列号
+	（5）优先使用UNION ALL，避免使用UNION
+	（6）在where语句或者order by语句中避免对索引字段进行计算操作
+	（7）使用not exist代替not in
+	（8）exist和in的区别
+	（9）避免在索引列上做如下操作：避免在索引字段上使用<>，!=；避免在索引列上使用IS NULL和IS NOT NULL；
+	 避免在索引列上出现数据类型转换（比如某字段是String类型，参数传入时是int类型）
+	（10）复杂操作可以考虑适当拆成几步
+	（11）尽量避免大事务操作，提高系统并发能力
+	（12）尽量避免使用游标，因为游标的效率较差，如果游标操作的数据超过1万行，那么就应该考虑改写。
+	（13）在所有的存储过程和触发器的开始处设置 SET NOCOUNT ON ，在结束时设置 SET NOCOUNT OFF 。
+	 无需在执行存储过程和触发器的每个语句后向客户端发送 DONE_IN_PROC 消息。
+3.分页查询实现：	
+	Hibernate封装分页操作：setFirstResult（）：设置从哪条数据开始查询的（分页的索引是从0开始的）；
+                              setProperties（）：设置每页显示的条数。
+	MySql分页查询： sql查询关键字： limit 参数一，参数二
+	Oracle分页查询：sql查询语句关键字：  runnum    
+4.MySql与Oracle区别：
+	1. 基本差别：
+	Oracle：是大型数据库，市场占有率达40%，价格非常高，占用特别大的内存空间和其他机器性能
+	Mysql是中小型数据库，市场只有20%左右，是开源数据库，占用内存空间和机器性能不大	
+ 	2.事务
+	oracle很早就完全支持事务。
+ 	mysql在innodb存储引擎的行级锁的情况下才支持事务。
+	3.事务提交方式
+	oracle默认不自动提交，需要用户手动提交。
+	mysql默认是自动提交。
+	4.逻辑备份
+ 	oracle逻辑备份时不锁定数据，且备份的数据是一致的。
+	mysql逻辑备份时要锁定数据，才能保证备份的数据是一致的，影响业务正常的dml使用。
+	5.性能诊断
+	oracle有各种成熟的性能诊断调优工具，能实现很多自动分析、诊断功能。比如awr、addm、sqltrace、tkproof等
+	mysql的诊断调优方法较少，主要有慢查询日志
+	6.复制
+	oracle:既有推或拉式的传统数据复制，也有dataguard的双机或多机容灾机制，主库出现问题是，可以自动切换备库到主库，
+	       但配置管理较复杂。
+	mysql:复制服务器配置简单，但主库出问题时，丛库有可能丢失一定的数据。且需要手工切换丛库到主库。
+	7.并发性：
+	mysql:以表级锁为主，对资源锁定的粒度很大，如果一个session对一个表加锁时间过长，会让其他session无法更新此表中的数据。
+		虽然InnoDB引擎的表可以用行级锁，但这个行级锁的机制依赖于表的索引，如果表没有索引，或者sql语句没有使用索引，
+		那么仍然使用表级锁。
+	oracle:使用行级锁，对资源锁定的粒度要小很多，只是锁定sql需要的资源，并且加锁是在数据库中的数据行上，不依赖与索引。
+		所以oracle对并发性的支持要好很多。
+5.索引，序列，游标：
+	索引：为了提高查询效率，但建立的索引过多会影响插入和删除数据的速度
+	     Mysql:主键索引（primary key） 唯一索引（unique） 常规索引（index/key） 全文索引（fulltext只有MyISAM类型表可以用）
+	     Oracle:B树(b-tree)索引、位图(bitmap)索引、函数索引、反转索引、分区索引、全局索引、HASH索引
+	序列：oacle提供的用于产生一系列唯一数字的数据库对象。自动提供唯一的数值；共享对象；主要用于提供主键值；
+	      将序列值装入内存可以提高访问效率。修改初始值方法：1.先删除序列，然后重新创建。2.通过Increment By来实现
+	游标：用来查询数据库，获取当前行记录集合（结果集）的指针。隐式游标：不用明确建立游标变量，分两种：
+	      1.在PL/SQL中使用DML语言，使用ORACLE提供的名为SQL的隐示游标
+	      2.CURSOR FOR LOOP，用于for loop 语句
+	      区别：尽量使用隐式游标，避免编写附加的游标控制代码（声明，打开，获取，关闭）也不需要声明变量来保存从游标中获取的数据。
+	      使用步骤：1、打开游标2、开始循环3、从游标中取值4、检查那一行被返回5、处理6、关闭循环7、关闭游标
+6.NoSql非关系型数据库：redis与mongoDB
+
+
+******JVM的机制：JVM解释器、指令系统、寄存器、栈、存储区和碎片回收区。
+1.垃圾回收器的种类
+	串行垃圾回收器（Serial Garbage Collector）
+	并行垃圾回收器（Parallel Garbage Collector）
+	并发标记扫描垃圾回收器（CMS Garbage Collector）
+	G1垃圾回收器（G1 Garbage Collector）
+2.GC的底层实现原理
+判断对象已死亡的方法：
+1）引用计数法
+就是通过一个计数器记录该对象被引用的次数，方法简单高效，但是解决不了循环引用的问题。
+2）根搜索
+通过选取一些根对象作为起始点，以有向图方式，开始向下搜索，如果一个对象到根对象不可达时，则说明此对象已经没有被引用，是可以被回收的。
+可以作为根的对象有：栈中变量引用的对象，类静态属性引用的对象，常量引用的对象等。因为每个线程都有一个栈，所以我们需要选取多个根对象。	  
+触发GC（Garbage Collector）的条件：
+1)GC在优先级最低的线程中运行，一般在应用程序空闲即没有应用线程在运行时被调用。但下面的条件例外。
+2)Java堆内存不足时，GC会被调用。当应用线程在运行，并在运行过程中创建新对象，若这时内存空间不足，JVM就会强制调用GC线程。
+若GC一次之后仍不能满足内存分配，JVM会再进行两次GC，若仍无法满足要求，则JVM将报“out of memory”的错误，Java应用将停止。  
+两个重要手动触发方法：
+（1）System.gc()可以不管JVM使用的是哪一种垃圾回收的算法，都可以请求Java的垃圾回收。 会影响系统性能，不推荐使用。
+（2）finalize（）Java提供了缺省机制来终止该对象心释放资源。使用特殊情况：
+	1）由于在分配内存的时候可能采用了类似 C语言的做法，而非JAVA的通常new做法。
+	2）又或者打开的文件资源，这些资源不属于垃圾回收器的回收范围。
+对象引用：
+  1）强引用，任何时候都不会被垃圾回收器回收，如果内存不足，宁愿抛出OutOfMemoryError。
+  2）软引用，只有在内存将满的时候才会被垃圾回收器回收，如果还有可用内存，垃圾回收器不会回收。
+  3）弱引用，只要垃圾回收器运行，就肯定会被回收，不管还有没有可用内存。
+  4）虚引用，虚引用等于没有引用，任何时候都有可能被垃圾回收。
+垃圾回收算法：
+1.标记-清除收集器—>基于tracing算法。标记阶段的任务是标记出所有需要被回收的对象，
+清除阶段就是回收被标记的对象所占用的空间。缺点：容易产生内存碎片
+2.复制收集器—>基于Copying算法。它将可用内存按容量划分为大小相等的两块，每次只使用其中的一块。当这一块的内存用完了，
+就将还存活着的对象复制到另外一块上面，然后再把已使用的内存空间一次清理掉，这样一来就不容易出现内存碎片的问题。
+缺点：占用内存空间的大，当存活对象很多，那么Copying算法的效率将会大大降低。
+3.标记-压缩收集器—>基于compacting算法。标记阶段的任务是标记出所有需要被回收的对象，
+压缩阶段将存活对象都向一端移动，然后清理掉端边界以外的内存
+4.分代收集器—>Generation算法。根据对象存活的生命周期将内存划分为若干个不同的区域。
+一般情况下将堆区划分为老年代（Tenured Generation）和新生代（Young Generation），那么就可以根据不同代的特点采取最适合的收集算法。
+老年代的特点是每次垃圾收集时只有少量对象需要被回收，一般使用的是Mark-Compact算法；
+而新生代的特点是每次垃圾回收时都有大量的对象需要被回收，采取Copying算法。
+
+
+
+*****你的职业规划
+……
