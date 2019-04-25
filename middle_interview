@@ -1,22 +1,55 @@
 treeMap 
-hashMap(底层实现jdk1.8)
+hashMap(底层实现jdk1.8) 初始16，加载因子0.75
+    数组 + （每个元素为头）链表     
+    根据key算hash值，相同则覆盖。 
+    冲突则在hash值处链表+1，链表越长遍历时间复杂度O(n).   
+    冲突解决方法：开放定址法，再散列法，链地址法（hashMap使用），扰动函数可以减少碰撞，原理是如果两个不相等的对象返回不同的hashcode的。使用不可变的、声明作final的对象，String，Interger这样的wrapper类作为键是非常好的选择
+    1.8之后，当链表长度大于8时，转化为红黑树结构 时间复杂度O(logn)   当链表小于6时，红黑树转化为链表
 ConcurrentHashMap
-
-hash一致算法
-
+   线程安全的 （数组+链表+红黑树）初始容量 (16)、加载因子 (0.75)  对hashMap而言，添加了Unsafe实例，主要用于反射获取对象相应的字段
+   JDK1.7采用segment的分段锁机制实现线程安全，其中segment继承自ReentrantLock。
+   JDK1.8采用CAS+Synchronized保证线程安全。
+   锁的粒度：原来是对需要进行数据操作的Segment加锁，现调整为对每个数组元素加锁（Node）
+   
+hash一致算法（哈希环）
+    对节点和数据，都做一次hash运算，然后比较节点和数据的hash值，数据值和节点最相近的节点作为处理节点。
+    为了分布得更均匀，通过使用虚拟节点的方式，每个节点计算出n个hash值，均匀地放在hash环上这样数据就能比较均匀地分布到每个节点。
+    
 GC算法
+    标记-清除  复制  标记-压缩  分代收集算法
 GC回收策略
+    引用计数法  可达性分析法
 GC机制
+    对象 可达性没有引用，标记一次，筛选，是否有必要执行finalize()回收。有必要，对象放置F—Queue队列中，自动创建低优先级Finalizer线程实现回收。
+    
 线程池创建的核心构造参数
+    corePoolSize（核心线程数） queueCapacity（任务队列容量）maxPoolSize（最大线程数）keepAliveTime（线程空闲时间）
+    allowCoreThreadTimeout（允许核心线程超时）rejectedExecutionHandler（任务拒绝处理器）
+
 双亲委派模型机制
-乐观锁，悲观锁，可重入锁和Synchronized
+    如果一个类加载器接收到了类加载的请求，它首先把这个请求委托给他的父类加载器去完成，每个层次的类加载器都是如此，因此所有的加载请求都应该传送到顶层的启动类加载器中，只有当父加载器反馈自己无法完成这个加载请求（它在搜索范围中没有找到所需的类）时，子加载器才会尝试自己去加载。
+
+乐观锁，悲观锁
+    悲观锁：阻塞直到获取锁，eg: synchronized和ReentrantLock等独占锁,适用于多写的情景  但可能死锁
+    乐观锁：更新的时候才会判断数据正确性，利用版本号机制和CAS算法实现。乐观锁适用于多读的应用类型，这样可以提高吞吐量 eg: java.util.concurrent.atomic
+
+可重入锁和Synchronized、ReentrantLock
+    可重复可递归调用的锁，在外层使用锁之后，在内层仍然可以使用，并且不发生死锁
+    不可重入锁：不可递归调用，递归调用就发生死锁  优化：判断当前锁持有者是否是当前对象，采用state计数，不用每次去释放锁
+
 CountDownLaunch 和 Cylicbrrior
 
 http 和 https
 
 innoDB支持四种隔离级别 
+     未提交读READ-UNCOMMITTED                   select 语句不加锁，会出现脏读。                           隔离性最差，并发最高
+     串行化SERIALIZABLE           select 语句隐式转换为 select … in share mode ，与 X 锁互斥。        一致性最好，并发最差，如果有未提交的修改，所有读取这些行的 select 都会被阻塞，没有 MVCC 。
+     可重复读REPEATABLE-READ                   普通 select 是 MVCC 。                              锁定读 /update/delete 使用 Record Lock 和 Next-Key Lock ，防止幻影记录出现。
+     提交读READ-COMMITTED（默认）               普通 select 是 MVCC 。                             锁定读 /update/delete 使用 Record Lock ，可能出现不可重复读。 
+
 
 TCP三次握手和四次挥手
+
 
 Spring IOC管理Bean 的依赖关系 
 
@@ -27,8 +60,9 @@ AOP原理
 
 Tomcat基本架构
 
-高并发防止死锁？
-
+高并发防止死锁
+    1.设置加锁顺序（线程按照一定的顺序加锁）  2.设置加锁时限：（超时重试）   3.提高数据库隔离级别
+    
 集群和负载均衡的算法实现
 
 分库分表设计
@@ -38,7 +72,18 @@ Redis异步队列
 缓存击穿 概念解决
 
 MQ底层实现
+    作用：异步，解耦，削峰
+    jms协议 
+    Pub/Sub发布订阅 
+    PTP点对点
+
+什么时候不使用MQ？
+    上游实时关注执行结果
+什么时候使用MQ？
+    1）数据驱动的任务依赖
+    2）上游不关心多下游执行结果
+    3）异步返回执行时间长
+
 
 高并发进行削峰 ，限流
 
-D
