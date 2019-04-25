@@ -1,0 +1,44 @@
+treeMap 
+hashMap(底层实现jdk1.8)
+ConcurrentHashMap
+
+hash一致算法
+
+GC算法
+GC回收策略
+GC机制
+线程池创建的核心构造参数
+双亲委派模型机制
+乐观锁，悲观锁，可重入锁和Synchronized
+CountDownLaunch 和 Cylicbrrior
+
+http 和 https
+
+innoDB支持四种隔离级别 
+
+TCP三次握手和四次挥手
+
+Spring IOC管理Bean 的依赖关系 
+
+Spring 的设计模式
+
+
+AOP原理
+
+Tomcat基本架构
+
+高并发防止死锁？
+
+集群和负载均衡的算法实现
+
+分库分表设计
+
+Redis异步队列
+
+缓存击穿 概念解决
+
+MQ底层实现
+
+高并发进行削峰 ，限流
+
+D
