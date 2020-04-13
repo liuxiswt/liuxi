@@ -476,3 +476,42 @@ public static int SubStr(char[] str){
         System.out.println(s.toString().substring(begin,begin+maxlen)+","+maxlen+","+ begin +","+(begin+maxlen));
         return maxlen;
     }
+
+
+
+
+
+2020：
+dubbo + spring  boot+ zk : 远程调用rpc  服务往注册中心注册，消费者url获取调用，分为 API + SERVICE 实现 配置中心：apollo 
+SPI扩展实现： 核心是URL 参数，生成拓展接口具有代理功能的代码，然后通过 javassist 或 jdk 编译这段代码，得到 Class 类。最后再通过反射创建代理类
+
+hsf + springMVC + Mysql +Oracle : 纯客户端架构的 RPC 框架 .    配置服务器  + 服务消费方（Consumer）与服务提供方（Provider）点对点进行 . 每个服务War包形式 （通过统一域名的方式访问 DNS 轮询实现）
+依赖阿里的持久化配置，地址注册中心，数据存储中心。不易扩展，局限很大。
+
+Activiti 使用命令模式cmd作为基础开发模式,命令上下文，持久化数据（ibatis） + Event-Listener（事件监听器）+PVM（流程虚拟机，画流程的、） + 乐观锁
+水平拆分 ：时间分片 。联合分库键（字段冗余） （Mycat）。
+
+原子类：
+基本类型：AtomicInteger：整形原子类AtomicLong：长整型原子类AtomicBoolean：布尔型原子类
+数组类型：AtomicIntegerArray：整形数组原子类AtomicLongArray：长整形数组原子类AtomicReferenceArray：引用类型数组原子类
+引用类型：AtomicReference：引用类型原子类AtomicStampedReference：原子更新引用类型里的字段原子类AtomicMarkableReference ：原子更新带有标记位的引用类型
+对象的属性修改类型：AtomicIntegerFieldUpdater：原子更新整形字段的更新器AtomicLongFieldUpdater：原子更新长整形字段的更新器AtomicStampedReference：原子更新带有版本号的引用类型
+CAS的原理是拿期望的值和原本的一个值作比较，如果相同则更新成新的值。
+AQS是一个用来构建锁和同步器的框架，使用模板方法模式.使用AQS能简单且高效地构造出应用广泛的大量的同步器.AQS核心思想是，如果被请求的共享资源空闲，则将当前请求资源的线程设置为有效的工作线程，并且将共享资源设置为锁定状态。如果被请求的共享资源被占用，那么就需要一套线程阻塞等待以及被唤醒时锁分配的机制，这个机制AQS是用CLH队列锁实现的，即将暂时获取不到锁的线程加入到队列中。CLH(Craig,Landin,and Hagersten)队列是一个虚拟的双向队列（虚拟的双向队列即不存在队列实例，仅存在结点之间的关联关系）。AQS是将每条请求共享资源的线程封装成一个CLH锁队列的一个结点（Node）来实现锁的分配。
+
+
+ConcurrentHashMap 数据分为一段一段的存储，然后给每一段数据配一把锁，当一个线程占用锁访问其中一个段数据时，其他段的数据也能被其他线程访问。
+CopyOnWriteArrayList 类的所有可变操作（add，set 等等）都是通过创建底层数组的新副本来实现的。当 List 需要被修改的时候，我并不修改原有内容，而是对原有数据进行一次复制，将修改的内容写入副本。写完之后，再将修改完的副本替换原来的数据，这样就可以保证写操作不会影响读操作了。
+ConcurrentLinkedQueue 主要使用 CAS 非阻塞算法来实现线程安全
+
+ArrayBlockingQueue 是 BlockingQueue 接口的有界队列实现类，底层采用数组来实现。ArrayBlockingQueue 一旦创建，容量不能改变。其并发控制采用可重入锁来控制，不管是插入操作还是读取操作，都需要获取到锁才能进行操作。当队列容量满时，尝试将元素放入队列将导致操作阻塞;尝试从一个空队列中取一个元素也会同样阻塞。
+LinkedBlockingQueue 底层基于单向链表实现的阻塞队列，可以当做无界队列也可以当做有界队列来使用，同样满足 FIFO 的特性，与 ArrayBlockingQueue 相比起来具有更高的吞吐量，为了防止 LinkedBlockingQueue 容量迅速增，损耗大量内存。通常在创建 LinkedBlockingQueue 对象时，会指定其大小，如果未指定，容量等于 Integer.MAX_VALUE。
+PriorityBlockingQueue 一个支持优先级的无界阻塞队列。并发控制采用的是 ReentrantLock，队列为无界队列（ArrayBlockingQueue 是有界队列，LinkedBlockingQueue 也可以通过在构造函数中传入 capacity 指定队列最大的容量，但是 PriorityBlockingQueue 只能指定初始的队列大小，后面插入元素的时候，如果空间不够的话会自动扩容）。
+
+
+
+对象创建：类加载检查->分配内存（“指针碰撞” 和 “空闲列表” ）->初始化零值->设置对象头->执行init方法
+
+虚拟机采用两种方式来保证线程安全：
+CAS+失败重试： CAS 是乐观锁的一种实现方式。所谓乐观锁就是，每次不加锁而是假设没有冲突而去完成某项操作，如果因为冲突失败就重试，直到成功为止。虚拟机采用 CAS 配上失败重试的方式保证更新操作的原子性。
+TLAB： 为每一个线程预先在 Eden 区分配一块儿内存，JVM 在给线程中的对象分配内存时，首先在 TLAB 分配，当对象大于 TLAB 中的剩余内存或 TLAB 的内存已用尽时，再采用上述的 CAS 进行内存分配
