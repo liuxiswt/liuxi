@@ -1,0 +1,43 @@
+ls     查看目录与文件  #显示当前目录下所有文件的详细信息：ls -la
+
+mkdir  创建目录  #在/opt/test目录下创建目录img，若无test目录，先创建test目录：mkdir -p/opt/test/img
+
+cat    查看文件内容  #查看desc.txt的内容：cat desc.txt
+
+more   分页查看文件内容 #分页查看desc.txt文件的内容：more desc.txt
+
+tail   查看文件尾部内容  #查看desc.txt的最后100行内容：tail -100 desc.txt
+
+cp     拷贝命令  #拷贝desc.txt文件到/mnt目录下：cp desc.txt /mnt/ #拷贝test目录到/mnt目录下：cp -r test /mnt
+
+mv     剪切或者改名  #剪切文件desc.txt到目录/mnt下：mv desc.txt /mnt/      1、当源文件所在的目录跟目标目录不同时，就是剪切操作；
+                                                                       2、当源文件所在目录跟目标目录相同时，就是改名操作。
+
+rm     删除命令  #删除test目录，-r递归删除，-f强制删除。数据无价，删除有风险， 删前需谨慎，切记！：rm -rf test
+
+find   搜索文件命令  #在opt目录下查找以.txt结尾的文件：find /opt -name '.txt'
+
+ln     创建链接文件  #创建目录/opt/test的符号链接：ln -s /opt/test ./link2test
+
+man    命令帮助 #对你不熟悉的命令提供帮助和解释：man ls就可以查看ls相关的用法
+
+cd+ pwd  路径操作命令1、改变当前目录#进入netseek目录：cd netseek2、查看当前所在目录完整路径：pwd
+
+shutdown 关机或重启命令 #立刻关机：shutdown -h now #60s后重启：shutdown -r -t 60
+
+netstat 显示网络相关信息 #列出所有端口：netstat -a
+
+du    查看目录使用情况  #查看/opt/test目录的磁盘使用情况：du -h /opt/test
+
+top   显示系统当前进程信息
+
+kill  杀死进程 #杀死进程号为27810的进程，强制终止，系统资源无法回收：kill -s 9 27810
+
+chmod 改变文件或目录的访问权限 #权限范围：u(拥有者)g(群组)o(其他用户)，权限代号：r(读权限)w(写权限)x(执行权限) 
+#给文件拥有者增加test.sh的执行权限：chmod u+x test.sh
+#给文件拥有者增加test目录及其下所有文件的执行权限：chmod u+x -R test
+
+tar + vf 压缩和解压缩#打包test目录为test.tar.gz文件，-z表示用gzip压缩：tar -zcvf test.tar.gz ./test #解压test.tar.gz文件：tar -zxvf test.tar.gz
+
+vim  文本编辑 #vim三种模式：命令模式、插入模式、编辑模式。使用ESC或i或：来切换模式#命令模式下，:q退出 :q!强制退出 :wq保存退出:set number显示行号
+/java 在文档中查找java   yy复制 p粘贴   #编辑desc.txt文件：vim desc.txt
