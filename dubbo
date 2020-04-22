@@ -1,0 +1,23 @@
+负载均衡：
+0.服务引用：spring的 ReferenceBean 的 getObject 方法->通过注册中心引用远程服务->代理工厂类生产代理类->调用Invoker
+1.策略：
+    RandomLoadBalance:随机负载均衡。随机的选择一个。是Dubbo的默认负载均衡策略。
+    RoundRobinLoadBalance:轮询负载均衡。轮询选择一个。
+    LeastActiveLoadBalance:最少活跃调用数，相同活跃数的随机。活跃数指调用前后计数差。使慢的 Provider 收到更少请求，
+    因为越慢的 Provider 的调用前后计数差会越大。
+    ConsistentHashLoadBalance:一致性哈希负载均衡。相同参数的请求总是落在同一台机器上。
+    自定义实现LoadBalance
+2.容错：
+    Failover Cluster - 失败自动切换重试： 在调用失败时，会自动切换 Invoker 进行重试。
+    Failfast Cluster - 快速失败： 只会进行一次调用，失败后立即抛出异常。适用于幂等操作，比如新增记录。
+    Failsafe Cluster - 失败安全：当调用过程中出现异常时，FailsafeClusterInvoker 仅会打印异常，而不会抛出异常。适用于写入审计日志等操作。
+    Failback Cluster - 失败自动恢复：会在调用失败后，返回一个空结果给服务消费者。并通过定时任务对失败的调用进行重传，适合执行消息通知等操作。
+    Forking Cluster - 并行调用多个服务提供者：在运行时通过线程池创建多个线程，并发调用多个服务提供者。只要有一个服务提供者成功返回了结果，
+    doInvoke 方法就会立即结束运行。ForkingClusterInvoker 的应用场景是在一些对实时性要求比较高读操作
+（注意是读操作，并行写操作可能不安全）
+3.SPI类加载机制： Dubbo 会为拓展接口生成具有代理功能的代码。然后通过 javassist 或 jdk 编译这段代码，得到 Class 类。最后再通过反射创建代理类
+4.服务调用方式：消费者->Proxy ->Client ->Server->Dispatcher->指定线程池->服务者
+    同步(默认)：系统调用ResponseFuture.get()
+    异步：用户调用ResponseFuture.get()
+5.线下服务: 服务消费方会监听注册中心相应的路径，一旦路径上的数据有任何的变化，注册中心就会将新的服务列表发送给消费方，消费方在获取到数据后，
+刷新本地缓存的列表。
