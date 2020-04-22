@@ -1,0 +1,76 @@
+1.负载均衡：
+   轮询 	                  默认方式
+   weight 	                  权重方式
+   ip_hash 	                  依据ip分配方式
+   least_conn 	  最少连接方式
+   fair（第三方） 	  响应时间方式
+   url_hash（第三方）  依据URL分配方式
+   一致性hash(第三方）一致性hash环
+2.内置变量：
+$arg_name 	指URL请求中的参数，name是参数的名字
+$args 	代表URL中所有请求的参数
+$binary_remote_addr 	客户端地址以二进制数据的形式出现，通常会和限速模块一起使用
+$body_bytes_sent 	发送给客户端的字节数，不包含响应头
+$bytes_set 	发送给客户端的字节总数
+$document_uri 	设置$uri的别名
+$hostname 	运行Nginx的服务器名
+$http_referer 	表示请求是从哪个页面链接过来的
+$http_user_agent 	客户端浏览器的相关信息
+$remote_addt 	客户端IP地址
+$remote_port 	客户端端口号
+$remote_user 	客户端用户名，通常在Auth Basic模块中使用
+$request_filename    请求的文件路径，基于root alias指令和URI请求生成
+$request_time           请求被nginx接收后，一直到相应数据返回给客户端所用时间
+$request_uri 	请求的URI，带参数
+$request 	记录请求的URL和HTTP
+$request_length 	请求的长度，包括请求行、请求头和请求正文
+$server_name 	虚拟主机的server_name的值，通常是域名
+$server_port 	服务器端口号
+$server_addr 	服务器的IP地址
+$request_method 	请求的方式，如GET、POST
+$scheme 	                请求的协议，如HTTP、HTTPS
+$sent_http_name 	任意响应头，name为响应头的名字，注意name要小写
+$realip_remote_addr 	保留原来的客户地址，在real_ip模块中使用
+$server_protocol 	请求采用的协议名称和版本号，常为HTTP/1.0或HTTP1.1
+$uri 	                当前请求的URI，在请求过程中URI可能会改变，例如在内部重定向或使用索引文件时
+$nginx_version 	Nginx版本号
+$pid 	                worker进程的PID
+$pipe 	                如果请求是HTTP流水线发送的，pipe值为“p”,否则为“.”
+$connection_request 	当前通过一个连接获得的请求数量
+$cookie_name 	name即Cookie名字，可得到Cookie信息
+$status 	                HTTP请求状态
+$msec 	                日志写入时间。单位为秒，经度为毫秒
+$time_local 	在通用日志格式下的本地时间
+$upstream_addr 	请求反向代理到后端服务器的IP地址
+$upstream_port 	请求反向代理到后端服务器的端口号
+$upstream_response_time  请求在后端服务器消耗的时间
+$upstream_status 	请求在后端你服务器的HTTP响应状态
+$geoip_city 	城市名称，在geoip模块中使用
+
+3.指令 ：  
+启动  sudo nginx 
+强制停止 nginx -s stop
+退出 nginx -s quit
+
+4.配置：
+    main：用于进行nginx全局信息的配置
+    events：用于nginx工作模式的配置
+    http：用于进行http协议信息的一些配置：  基础http请求/日志/SSL证书加密/压缩/文件缓存 配置
+    server：用于进行服务器访问信息的配置：
+		server：一个虚拟主机的配置，一个http中可以配置多个server
+		server_name：用力啊指定ip地址或者域名，多个配置之间用空格分隔
+		root：表示整个server虚拟主机内的根目录，所有当前主机中web项目的根目录
+		index：用户访问web网站时的全局首页
+		charset：用于设置www/路径中配置的网页的默认编码格式
+		access_log：用于指定该虚拟主机服务器中的访问记录日志存放路径
+		error_log：用于指定该虚拟主机服务器中访问错误日志的存放路径
+    location：用于进行访问路由的配置(proxy_set配置反向代理)
+		location /：表示匹配访问根目录
+		root：用于指定访问根目录时，访问虚拟主机的web目录
+		index：在不指定访问具体资源时，默认展示的资源文件列表
+    upstream：用于进行负载均衡的配置
+		ip_hash：指定请求调度算法，默认是weight权重轮询调度，可以指定
+		server host:port：分发服务器的列表配置
+		-- down：表示该主机暂停服务
+		-- max_fails：表示失败最大次数，超过失败最大次数暂停服务
+		-- fail_timeout：表示如果请求受理失败，暂停指定的时间之后重新发起请求
