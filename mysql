@@ -29,6 +29,21 @@ B*Tree:一棵丰满的B+-tree
 
 
 2.mysql的四种引擎，原理？
+
+3.mysql中的utf8 和utf8mb4 及排序？
+utf8最长使用3个字节,目的是为了节省空间。 5.5.3V之后增加了 utf8mb4 字符编码，mb4即 most bytes 4,使用4个字节来表示完整的UTF-8。
+utf8mb4_bin： 将字符串每个字符用二进制数据编译存储，区分大小写，而且可以存二进制的内容。
+utf8mb4_general_ci：不区分大小写，是一个遗留的校对规则，不支持扩展，它仅能够在字符之间进行逐个比较，没有实现Unicode排序规则，
+在遇到某些特殊语言或者字符集，排序结果可能不一致。但是，在绝大多数情况下，这些特殊字符的顺序并不需要那么精确。（比较排序快，性能高)
+utf8mb4_unicode_ci：是基于标准的Unicode来排序和比较，能够在各种语言之间精确排序，Unicode排序规则为了能够处理特殊字符的情况，
+实现了略微复杂的排序算法。（精确度高）
+collate规则：
+utf8mb4_bin 大小写敏感
+utf8mb4_general_cs 大小写敏感
+*_bin: 表示的是binary case sensitive collation，也就是说是区分大小写的
+*_cs: case sensitive collation，区分大小写
+*_ci: case insensitive collation，不区分大小写
+
 3.redis相关，架构，模式？
 4.TCP/UDP区别联系？
 5.线程和进程的区别，内存分配，工作模式？
