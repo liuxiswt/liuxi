@@ -1,0 +1,58 @@
+基于activiy5.6实现工作流服务：
+设计方案：
+1.设计服务拆分：历史数据模块、流程设计模块、流程运行管理、监听管理模块、表单管理模块
+2.表单引擎+流程引擎+数据引擎+脚本引擎
+3.授权方案使用secret+code自定义加密的签名验证。
+4.流程设计分业务简单流程+ 高级复杂流程（运维处理）  简单流程实现方案：xpath解析xml，动态生成bpmn.xml文件实现持久化(支持线性并行流程。
+不支持轮询回调，定时器，边界事件等)。
+5.风险评估(系统负载、业务功能扩展、人员工时、系统稳定性、数据安全)
+6.集成用户中心：用户中心查询+动态拼接sql，多租户+视图同步数据
+activit缺陷：
+1.持久层利用mybatis3，指令模式封装。大数据量(节点表和历史表)时性能差，拆表麻烦。8核32G服务器，千万级数据量响应时间在8S，并发数(乐观锁)稳定在1000左右，
+TPS在110sec。
+2.典型的流程驱动业务性工作流，只有流程引擎，没有表单引擎。表单必须绑定节点，表单一对一流程(通过监听器修改值)。
+3.缺少节点实例轨迹数据的持久化(Activiti运行时围绕act_ru_execution这张表来工作，执行时是一个树型表，节点执行完删除)
+4.Activti的扩展非常依懒事件监听和AOP切面事件，其中一个常用的扩展之一就是在执行过程修改Activiti的源代码，
+然后在网关节点的代码中广播各种事件通过Spring来捕获这些事件，交给事件来进行流程执行过程中的数据进行记录。代码混乱+数据脆弱。
+导致了会签驳回功能实现非常麻烦（查流程，删除多余数据）。一个Parent_Id_维护不了并行节点合并。
+优化点：
+1.利用druid + TenantId实现单引擎多租户（为什么不使用多引擎？配置复杂，每个引擎都占用内存和资源），TenantId由唯一id+系统标识 。
+核心点是单例引擎+路由规则 。实现过程：创建引擎时注入租户registerTenant，实现TenantInfoHolder接口配置数据库。路由规则和租户对应关系是写在配置文件。
+不足之处：不同租户(数据库)数据量“负载均衡”->对历史表进行按时间的水平分表，节点表等主键通过hash（table_name+id取余+固定值）算计水平分表。
+2.动态表单集成(UForm,json的动态管理)，新增表act_ru_form做持久化。策略模式+监听器实现非userTask，集成脚本引擎(基于AOP+handler)->节点执行后，
+自定义注解接口(值动态指向节点业务id) + redis分布式锁 + 线程池->保证事务一致。
+3.独立的监听器模块管理。工厂 + 动态注入，事件处理数据持久化act_lis_data。
+4.未处理考虑：利用指针思想，多指针。（参考b-tree算法）
+
+
+
+
+
+activity介绍：
+1.原分组：RU(运行)、RE(资源)、ID(身份)、HI(历史)、GE(通用)、EVT(事件处理日志) 
+2.jar包描述：
+Activiti-administrator：自带的用户管理系统，维护用户和组，需要配置数据连接参数，在activiti-administrator\WEB-INF\applicationContext.xml中，
+并加入JDBC驱动包。
+Activiti-cycle:PVM活动检测的，由activiti-rest提供服务，不需配置。
+Activiti-explorer:可以查看用户任务和启动流程，由activiti-rest提供服务，不需配置。
+Activiti-kickstart：简单的点对点流程定义维护工具，需要配置数据连接，把activiti.cfg.xml文件放在classes下，并加入驱动包
+Activiti-modeler：在线编辑和维护流程定义的工具，最后以文件夹的方式部署，需要配置：activiti-modeler\WEB-INF\classes\configuration.properties文件。
+Activiti-probe：PVM的观测服务，由activiti-rest提供服务，不需配置。可以查看deployment、processdefinition、processinstance、database。
+Activiti-rest：其它几个应用的服务提供者，需要配置数据连接，把activiti.cfg.xml文件放在classes下，并加入驱动包。
+3.关键对象：
+Deployment：流程部署对象，部署一个流程是创建。
+processDefinitions：流程定义，部署成功后自动创建。
+ProcessInstances:流程实例，启动流程是创建。
+Task：任务，在activiti中的task仅指有角色参与的任务，即定义中的UserTask。
+Execution：执行计划，流程实例和流程执行中的所有节点都是Execution，如UserTask、ServiceTask等。
+4.服务接口：
+ProcessEngine：流程引擎接口，提供流程管理和运作的所有接口。
+RuntimeService：运行时服务接口，提供流程启动服务，运行中流程查询，运行变量设置和获取。
+TaskService：用户任务接口（UserTask），提供运行时任务查询、领取、完成、删除及变量设置用户管理等服务。
+IdentityService：用户和组管理接口。
+ManagementService:流程引擎管理接口。
+HistoryService：流程处理查询接口，包括执行中流程查询和历史流程查询
+
+
+
+
