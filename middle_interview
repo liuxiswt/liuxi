@@ -96,7 +96,11 @@ Container：处理请求的父容器，包括Engine（基本的关联关系）�
 Redis异步队列
 一般使用list结构作为队列，rpush生产消息，lpop消费消息
 Redis的数据结构
-list set hash zset string
+list  lpush/rpush/lpop/rpop/lrem/lindex/lset
+set   sadd/srem/sdiff/sinter/sunion   
+hash  hget/hset/hdel/
+zset  zadd/zscore/zrem/zrange/zrevrange（按分数大到小）/zrank（按元素小到大）     
+string   get/set/del
 
 缓存风险的概念解决
 缓存穿透，是指查询一个数据库一定不存在的数据  ----如果从数据库查询的对象为空，也放入缓存，只是设定的缓存过期时间较短，比如设置为60秒。
