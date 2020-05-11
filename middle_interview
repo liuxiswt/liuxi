@@ -78,9 +78,25 @@ Spring包括 Core Bean Context EL
 Spring IOC管理Bean 的依赖关系 ---原理是工厂模式加反射机制
     IOC（BeanFactory 和 ApplicationContext）容器创建对象，配置并管理对象完整生命周期。依赖注入时，不必创建，必须描述如何创建，在配置文件中将组建和服务关联，由IOC起来。
     完成依赖注入的方式：1.构造函数注入 2.setter注入 3.接口注入（少用）
-    
-Spring 的设计模式
+Spring 启动：web.xml->初始化上下文->初始化ApplicationContext->创建WebApplicationContext\加载bean->创建完毕，放入全量变量。
 
+Spring boot启动: 
+1.构造SpringApplication应用(初始化配置：主资源类(一般是启动类 primarySources )、应用类型(webApplicationType )、
+应用环境上下文初始化器(initializers)、应用监听器(listeners)、main方法主类(mainApplicationClass ))
+2.运行SpringApplication运行（执行run方法）：一方面要初始化IOC容器(主要是bean的加载与初始化)，
+一方面要在不同的阶段直接或间接回调ApplicationListener或ApplicationRunner等其他接口的方法
+3.初始化IOC容器是通过SpringFactoriesLoader是SpringBoot自动化配置功能极其关键的一环，它读取类路径下META-INF/spring.factories文件中工厂接口的实现类，
+来获取各种各种的Bean工厂实例，最终获取到自动化配置的bean.
+
+Spring循环依赖： bean A->Bean B->Bean C->Bean A 两种：构造依赖|属性依赖(spring支持:字段/setter注入)
+原因：
+Spring是通过递归的方式获取目标bean及其所依赖的bean的；
+Spring实例化一个bean的时候，是分两步进行的，首先实例化目标bean，然后为其注入属性
+
+
+
+
+Spring 的设计模式
 
 AOP原理--代理
 静态代理关键是在代理对象和目标对象实现共同的接口，并且代理对象持有目标对象的引用
