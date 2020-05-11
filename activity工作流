@@ -52,7 +52,7 @@ TaskService：用户任务接口（UserTask），提供运行时任务查询、�
 IdentityService：用户和组管理接口。
 ManagementService:流程引擎管理接口。
 HistoryService：流程处理查询接口，包括执行中流程查询和历史流程查询
-
+工作流中用的设计模式：
 
 
 
