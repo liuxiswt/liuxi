@@ -118,4 +118,7 @@ TLAB： 为每一个线程预先在 Eden 区分配一块儿内存，JVM 在给�
 使用：程序之间的相互调用。
 卸载：即销毁一个对象，一般情况下中有JVM垃圾回收器完成。代码层面的销毁只是将引用置为null。
 
-
+10.类加载的方式：
+（1）通过命令行启动应用时由JVM初始化加载含有main()方法的主类。
+（2）通过Class.forName()方法动态加载，会默认执行初始化块（static{}），但是Class.forName(name,initialize,loader)中的initialze可指定是否要执行初始化块。
+（3）通过ClassLoader.loadClass()方法动态加载，不会执行初始化块。
